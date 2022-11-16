@@ -14,7 +14,11 @@ const AddMoneyWithETH = ({ abi, contractAddress }) => {
   const [amount, setAmount] = useState(0);
   const dispatch = useNotification();
 
-  const { runContractFunction: addMoney } = useWeb3Contract({
+  const {
+    runContractFunction: addMoney,
+    isFetching,
+    isLoading,
+  } = useWeb3Contract({
     abi: abi,
     contractAddress: contractAddress,
     functionName: "addMoney",
@@ -72,7 +76,13 @@ const AddMoneyWithETH = ({ abi, contractAddress }) => {
         }}
         disabled={amount > 0 ? false : true}
       >
-        Add Money
+        {isFetching || isLoading ? (
+          <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          <>AddMoney</>
+        )}
       </button>
     </div>
   );

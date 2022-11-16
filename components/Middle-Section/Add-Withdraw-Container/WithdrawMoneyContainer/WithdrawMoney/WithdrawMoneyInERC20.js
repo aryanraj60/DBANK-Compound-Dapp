@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useWeb3Contract } from "react-moralis";
+import { useNotification } from "web3uikit";
 
 const WithdrawMoneyInERC20 = ({ abi, contractAddress }) => {
   const [tokenAddress, setTokenAddress] = useState("");
+
+  const dispatch = useNotification();
 
   const {
     runContractFunction: withdrawMoneyInErc20,
@@ -16,6 +19,35 @@ const WithdrawMoneyInERC20 = ({ abi, contractAddress }) => {
       tokenAddress: tokenAddress,
     },
   });
+
+  const handleSuccess = async (tx) => {
+    await tx.wait(1);
+    handleSuccessNotification();
+  };
+
+  const handleSuccessNotification = () => {
+    dispatch({
+      type: "success",
+      message: "Transaction Complete!",
+      title: "Tx Notification",
+      position: "topR",
+    });
+  };
+
+  const handleError = async (error) => {
+    console.log("I'm handling Error");
+    console.log("Here is the Error", error);
+    handleErrorNotification();
+  };
+
+  const handleErrorNotification = () => {
+    dispatch({
+      type: "error",
+      title: "Transaction Failed",
+      message: "Something Went Wrong!",
+      position: "topR",
+    });
+  };
 
   return (
     <div className="WithdrawMoneyInERC20 d-flex flex-column align-items-center">
@@ -33,11 +65,20 @@ const WithdrawMoneyInERC20 = ({ abi, contractAddress }) => {
       <button
         className="btn btn-light w-50"
         onClick={async () => {
-          await withdrawMoneyInErc20();
+          await withdrawMoneyInErc20({
+            onSuccess: handleSuccess,
+            onError: handleError,
+          });
         }}
         disabled={isFetching || isLoading || !tokenAddress}
       >
-        Withdraw In ERC20
+        {isFetching || isLoading ? (
+          <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          <>Withdraw Money In ERC20</>
+        )}
       </button>
     </div>
   );

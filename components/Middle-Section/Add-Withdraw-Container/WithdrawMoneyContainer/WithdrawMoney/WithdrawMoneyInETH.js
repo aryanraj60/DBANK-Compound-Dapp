@@ -6,7 +6,11 @@ import { useNotification } from "web3uikit";
 const WithdrawMoney = ({ abi, contractAddress }) => {
   const dispatch = useNotification();
 
-  const { runContractFunction: withdrawMoney } = useWeb3Contract({
+  const {
+    runContractFunction: withdrawMoney,
+    isFetching,
+    isLoading,
+  } = useWeb3Contract({
     abi: abi,
     contractAddress: contractAddress,
     functionName: "withdraw",
@@ -56,7 +60,13 @@ const WithdrawMoney = ({ abi, contractAddress }) => {
           });
         }}
       >
-        Withdraw In ETH
+        {isFetching || isLoading ? (
+          <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          <>Withdraw In ETH</>
+        )}
       </button>
     </div>
   );
