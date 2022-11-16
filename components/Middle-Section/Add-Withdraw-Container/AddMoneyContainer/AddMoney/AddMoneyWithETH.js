@@ -37,8 +37,6 @@ const AddMoneyWithETH = ({ abi, contractAddress }) => {
   };
 
   const handleError = async (error) => {
-    console.log("I'm handling Error");
-    console.log("Here is the Error", error);
     handleErrorNotification();
   };
 
@@ -50,7 +48,6 @@ const AddMoneyWithETH = ({ abi, contractAddress }) => {
       position: "topR",
     });
   };
-  console.log("add money render with erc20");
   return (
     <div className="AddMoneyWithETH d-flex justify-content-between">
       <input

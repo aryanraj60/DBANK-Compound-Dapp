@@ -5,7 +5,6 @@ import { useMoralis, useWeb3Contract } from "react-moralis";
 const DisplayBalance = ({ abi, contractAddress }) => {
   const [balance, setBalance] = useState("0");
   const { web3, isWeb3Enabled, account } = useMoralis();
-  console.log("Connected Account: ", account);
   const [isEventSet, setIsEventSet] = useState(false);
   const [dbank, setDbank] = useState();
 
@@ -23,8 +22,6 @@ const DisplayBalance = ({ abi, contractAddress }) => {
   });
 
   async function updateUI() {
-    console.log("I'm updateUI");
-    console.log("Getting balance for account", account);
     const balanceFromCall = (
       await getBalance({ params: { _owner: account } })
     ).toString();
@@ -40,27 +37,17 @@ const DisplayBalance = ({ abi, contractAddress }) => {
   // }
 
   useEffect(() => {
-    console.log("I'm useffect inside balance comp");
     if (isWeb3Enabled) {
-      console.log("Initialzing The MoneyAdded Event");
       let dbankContract = new ethers.Contract(contractAddress, abi, web3);
       dbankContract.on("MoneyAdded", () => {
-        console.log("MoneyAdded Event Emitted");
-        console.log("Updating UI of Balances Component");
         handleUIChange();
       });
-      console.log("Initializing The Money Withdraw Event.");
       dbankContract.on("MoneyWithdraw", () => {
-        console.log("MoneyWithdraw Event Emitted");
-        console.log(
-          "Updating UI of Balance Component(By Withdraw event callback)"
-        );
         handleUIChange();
       });
       setIsEventSet(true);
       setDbank(dbankContract);
       return () => {
-        console.log("Removing listener when component unmounts");
         dbankContract.removeAllListeners("MoneyAdded");
         dbankContract.removeAllListeners("MoneyWithdraw");
       };
@@ -68,34 +55,24 @@ const DisplayBalance = ({ abi, contractAddress }) => {
   }, [web3]);
 
   useEffect(() => {
-    console.log("I'm useffect which remove listener");
     if (isEventSet && isWeb3Enabled) {
       // console.log("Removing Listener.");
       dbank.removeAllListeners("MoneyAdded");
       dbank.removeAllListeners("MoneyWithdraw");
       setIsEventSet(false);
-      console.log("Money Added and Withdraw Money Listeners Removed");
-      console.log("Setting Both New Listeners");
       dbank.on("MoneyAdded", (_sender, amount) => {
-        console.log("Event Emitted");
-        console.log("Updating UI of Balances Component");
         handleUIChange();
       });
       dbank.on("MoneyWithdraw", () => {
-        console.log("MoneyWithdraw Event Emitted");
-        console.log(
-          "Updating UI of Balance Component(By Withdraw event callback)"
-        );
         handleUIChange();
       });
       setIsEventSet(true);
-      console.log("New Listener Set");
+
       // dbank.removeAllListeners("MoneyAdded");
       // console.log("Listener Removed!");
       // setIsEventSet(false);
 
       return () => {
-        console.log("Removing listener when component unmounts");
         dbank.removeAllListeners("MoneyAdded");
         dbank.removeAllListeners("MoneyWithdraw");
       };
@@ -107,8 +84,6 @@ const DisplayBalance = ({ abi, contractAddress }) => {
       updateUI();
     }
   }, [account]);
-  console.log("display balance rendered");
-  console.log(dbank);
   return (
     <div className="d-flex justify-content-center">
       <h3 className="text-light text-center w-75">

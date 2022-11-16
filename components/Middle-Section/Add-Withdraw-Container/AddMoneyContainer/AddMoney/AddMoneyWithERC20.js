@@ -47,8 +47,6 @@ const AddMoneyWithERC20 = ({ abi, contractAddress }) => {
     });
   };
 
-  console.log("Add money Erc20 rendered");
-
   return (
     <div className="AddMoneyWithERC20 d-flex justify-content-between">
       <input

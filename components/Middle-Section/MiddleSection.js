@@ -11,7 +11,6 @@ const MiddleSection = () => {
   const contractAddress =
     chainId in contractAddresses ? contractAddresses[chainId][0] : null;
 
-  console.log("MiddleSection rendered");
   return (
     <div className="middleSection">
       <div className=" mt-3 mb-5 mx-auto w-50 Balance">
