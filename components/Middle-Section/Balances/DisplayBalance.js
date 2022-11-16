@@ -83,12 +83,16 @@ const DisplayBalance = ({ abi, contractAddress }) => {
     if (isWeb3Enabled) {
       updateUI();
     }
-  }, [account]);
+  }, [account, isWeb3Enabled]);
   return (
     <div className="d-flex justify-content-center">
-      <h3 className="text-light text-center w-75">
-        Current Balance: {ethers.utils.formatUnits(balance, "ether")} ETH
-      </h3>
+      {isWeb3Enabled ? (
+        <h3 className="text-light text-center w-75">
+          Current Balance: {ethers.utils.formatUnits(balance, "ether")} ETH
+        </h3>
+      ) : (
+        <div></div>
+      )}
       {/* <button
         onClick={() => {
           updateUI();
