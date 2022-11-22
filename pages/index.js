@@ -1,4 +1,3 @@
-import styles from "../styles/Home.module.css";
 import MiddleSection from "../components/Middle-Section/MiddleSection";
 import { useMoralis } from "react-moralis";
 import { abi, contractAddresses } from "../constants/index";
@@ -11,7 +10,7 @@ export default function Home() {
     chainID in contractAddresses ? contractAddresses[chainID][0] : null;
 
   return (
-    <div className={`${styles.home}`}>
+    <div className="Home">
       {isWeb3Enabled ? (
         contractAddress ? (
           <>
