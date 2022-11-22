@@ -1,6 +1,5 @@
 import React from "react";
 import { ConnectButton } from "web3uikit";
-import { useMoralis } from "react-moralis";
 
 const Navbar = () => {
   console.log("nav rendered");

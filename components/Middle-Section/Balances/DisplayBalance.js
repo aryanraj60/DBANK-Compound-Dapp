@@ -32,10 +32,6 @@ const DisplayBalance = ({ abi, contractAddress }) => {
     updateUI();
   };
 
-  // const disableEvent = () => {
-  //   eventEmitter = null;
-  // }
-
   useEffect(() => {
     if (isWeb3Enabled) {
       let dbankContract = new ethers.Contract(contractAddress, abi, web3);
@@ -86,20 +82,9 @@ const DisplayBalance = ({ abi, contractAddress }) => {
   }, [account, isWeb3Enabled]);
   return (
     <div className="d-flex justify-content-center">
-      {isWeb3Enabled ? (
-        <h3 className="text-light text-center w-75">
-          Current Balance: {ethers.utils.formatUnits(balance, "ether")} ETH
-        </h3>
-      ) : (
-        <div></div>
-      )}
-      {/* <button
-        onClick={() => {
-          updateUI();
-        }}
-      >
-        Update Balance
-      </button> */}
+      <h3 className="text-light text-center w-75">
+        Current Balance: {ethers.utils.formatUnits(balance, "ether")} ETH
+      </h3>
     </div>
   );
 };
